@@ -1,18 +1,26 @@
 package algos
 
-func Sum(arr []int) int {
-	sum := 0
-	for _, valueInt := range arr {
-		sum += valueInt
+func Sum[T ~uint | ~int |
+	~int8 | ~int16 | ~int32 | ~int64 |
+	~uint8 | ~uint16 | ~uint32 | ~uint64 |
+	~float32 | ~float64,
+](arr []T) T {
+	sum := *new(T)
+	for _, v := range arr {
+		sum += v
 	}
 	return sum
 }
 
-func Product(arr []int) int {
+func Product[T ~uint | ~int |
+	~int8 | ~int16 | ~int32 | ~int64 |
+	~uint8 | ~uint16 | ~uint32 | ~uint64 |
+	~float32 | ~float64,
+](arr []T) T {
 	// empty products = 1, see 0! and x^0... https://en.wikipedia.org/wiki/Empty_product
-	prod := 1
-	for _, valueInt := range arr {
-		prod *= valueInt
+	var prod T
+	for _, v := range arr {
+		prod *= v
 	}
 	return prod
 }

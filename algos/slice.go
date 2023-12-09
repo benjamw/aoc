@@ -2,6 +2,7 @@ package algos
 
 import (
 	"sort"
+	"strconv"
 
 	"github.com/benjamw/aoc/cast"
 )
@@ -11,6 +12,17 @@ func ToIntSlice(in []string) []int {
 
 	for _, value := range in {
 		v = append(v, cast.ToInt(value))
+	}
+
+	return v
+}
+
+func ToInt64Slice(in []string) []int64 {
+	v := make([]int64, 0, len(in))
+
+	for _, value := range in {
+		i, _ := strconv.ParseInt(value, 0, 64)
+		v = append(v, i)
 	}
 
 	return v
@@ -26,8 +38,8 @@ func ToStringSlice(in []int) []string {
 	return v
 }
 
-func RemoveIndex(s []interface{}, index int) []interface{} {
-	ret := make([]interface{}, 0)
+func RemoveIndex[T any](s []T, index int) []T {
+	ret := make([]T, 0)
 	ret = append(ret, s[:index]...)
 	return append(ret, s[index+1:]...)
 }

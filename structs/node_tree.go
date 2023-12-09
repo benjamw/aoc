@@ -1,4 +1,4 @@
-package node_tree
+package structs
 
 // see 2023/day08 for usage
 

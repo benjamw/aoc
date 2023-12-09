@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/benjamw/aoc/algos"
-	"github.com/benjamw/aoc/data_structures/node_tree"
+	"github.com/benjamw/aoc/structs/node_tree"
 	"github.com/benjamw/aoc/util"
 )
 

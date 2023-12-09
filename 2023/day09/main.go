@@ -4,9 +4,10 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
+	"slices"
 	"strings"
 
-	"github.com/benjamw/aoc/cast"
+	"github.com/benjamw/aoc/algos"
 	"github.com/benjamw/aoc/util"
 )
 
@@ -28,7 +29,7 @@ func main() {
 	fmt.Println("Running part", part)
 
 	if part == 1 {
-		ans := part1(input)
+		ans := part1(input, false)
 		fmt.Println("Output:", ans)
 	} else {
 		ans := part2(input)
@@ -36,23 +37,77 @@ func main() {
 	}
 }
 
-func part1(input string) int {
+func part1(input string, part2 bool) int {
 	defer util.Duration(util.Track("part1"))
 	parsed := parseInput(input)
-	_ = parsed
 
-	return 0
+	extra := make([]int, 0)
+
+	for i, p := range parsed {
+		_ = i
+		stack := calcStack(p)
+		extra = append(extra, reverseCalcStack(stack, part2))
+	}
+
+	return algos.Sum(extra)
 }
 
 func part2(input string) int {
-	defer util.Duration(util.Track("part2"))
-	return 0
+	return part1(input, true)
 }
 
-func parseInput(input string) (ans []int) {
+func parseInput(input string) (ans [][]int) {
 	for _, line := range strings.Split(input, "\n") {
-		ans = append(ans, cast.ToInt(line))
+		l := strings.Split(line, " ")
+		ans = append(ans, algos.ToIntSlice(l))
 	}
 
 	return ans
+}
+
+func differences(l []int) []int {
+	ret := make([]int, 0)
+	for i := 1; i < len(l); i++ {
+		ret = append(ret, l[i]-l[i-1])
+	}
+
+	return ret
+}
+
+func calcStack(p []int) [][]int {
+	s := [][]int{p}
+	for {
+		d := differences(p)
+		s = append(s, d)
+		if isZeros(d) {
+			return s
+		}
+
+		p = d
+	}
+}
+
+func reverseCalcStack(stack [][]int, front bool) int {
+	// start going back up the stack and add values
+	d := 0
+	slices.Reverse(stack)
+	for _, s := range stack {
+		if front {
+			d = s[0] - d
+		} else {
+			d = d + s[len(s)-1]
+		}
+	}
+
+	return d
+}
+
+func isZeros(l []int) bool {
+	for _, i := range l {
+		if i != 0 {
+			return false
+		}
+	}
+
+	return true
 }
