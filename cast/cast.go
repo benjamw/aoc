@@ -8,43 +8,68 @@ import (
 	"strconv"
 )
 
-// ToInt will case a given arg into an int type.
+// ToInt will cast a given arg into an int type.
 // Supported types are:
-//    - string
+//   - string
 func ToInt(arg interface{}) int {
 	var val int
+	var err error
 	switch arg.(type) {
 	case string:
-		var err error
 		val, err = strconv.Atoi(arg.(string))
 		if err != nil {
 			panic("error converting string to int " + err.Error())
 		}
+	case rune:
+		val, err = strconv.Atoi(string(arg.(rune)))
+		if err != nil {
+			panic("error converting string to int " + err.Error())
+		}
+	case float32,
+		float64:
+		val = int(arg.(float64))
 	default:
 		panic(fmt.Sprintf("unhandled type for int casting %T", arg))
 	}
 	return val
 }
 
-// ToString will case a given arg into an int type.
+// ToString will cast a given arg into a string type.
 // Supported types are:
-//    - int
-//    - byte
-//    - rune
+//   - int (all)
+//   - byte
+//   - rune
 func ToString(arg interface{}) string {
 	var str string
 	switch arg.(type) {
-	case int:
-		str = strconv.Itoa(arg.(int))
-	case byte:
+	case int,
+		uint,
+		int8,
+		int16,
+		uint16,
+		uint32,
+		int64,
+		uint64:
+		str = strconv.FormatInt(int64(arg.(int)), 10)
+	case byte: // uint8
 		b := arg.(byte)
 		str = string(rune(b))
-	case rune:
+	case rune: // int32
 		str = string(arg.(rune))
 	default:
 		panic(fmt.Sprintf("unhandled type for string casting %T", arg))
 	}
 	return str
+}
+
+func ToSlice(m map[interface{}]interface{}) []interface{} {
+	v := make([]interface{}, 0, len(m))
+
+	for _, value := range m {
+		v = append(v, value)
+	}
+
+	return v
 }
 
 const (

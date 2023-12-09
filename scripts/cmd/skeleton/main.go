@@ -4,7 +4,7 @@ import (
 	"flag"
 	"time"
 
-	"github.com/alexchao26/advent-of-code-go/scripts/skeleton"
+	"github.com/benjamw/aoc/scripts/skeleton"
 )
 
 func main() {

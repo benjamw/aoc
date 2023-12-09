@@ -1,5 +1,7 @@
-module github.com/alexchao26/advent-of-code-go
+module github.com/benjamw/aoc
 
-go 1.16
+go 1.21
 
-require golang.org/x/net v0.0.0-20201110031124-69a78807bb2b
+require golang.org/x/net v0.19.0
+
+require github.com/davecgh/go-spew v1.1.1 // indirect

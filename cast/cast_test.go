@@ -3,7 +3,7 @@ package cast_test
 import (
 	"testing"
 
-	"github.com/alexchao26/advent-of-code-go/cast"
+	"github.com/benjamw/aoc/cast"
 )
 
 func TestToInt(t *testing.T) {
@@ -16,7 +16,7 @@ func TestToInt(t *testing.T) {
 }
 
 func TestToString(t *testing.T) {
-	byteTests := []struct {
+	stringTests := []struct {
 		name  string
 		input interface{}
 		want  string
@@ -28,10 +28,10 @@ func TestToString(t *testing.T) {
 		{"rune", rune(65), "A"},
 		{"rune", rune(97), "a"},
 	}
-	for _, tt := range byteTests {
+	for _, tt := range stringTests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := cast.ToString(tt.input); got != tt.want {
-				t.Errorf("ToString(byte) = %q, want %q", got, tt.want)
+				t.Errorf("ToString(%s) = %q, want %q", tt.name, got, tt.want)
 			}
 		})
 	}
