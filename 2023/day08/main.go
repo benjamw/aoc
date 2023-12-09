@@ -8,13 +8,14 @@ import (
 	"strings"
 
 	"github.com/benjamw/aoc/algos"
+	"github.com/benjamw/aoc/data_structures/node_tree"
 	"github.com/benjamw/aoc/util"
 )
 
 //go:embed input.txt
 var input string
 
-var nodes map[string]*node
+var nodes map[string]*node_tree.Node
 
 var nodeRegex *regexp.Regexp
 
@@ -66,7 +67,7 @@ func part2(input string) int {
 }
 
 func parseInput(input string) (ans desert) {
-	nodes = make(map[string]*node)
+	nodes = make(map[string]*node_tree.Node)
 	desert := desert{}
 	for i, line := range strings.Split(input, "\n") {
 		if i == 0 {
@@ -79,7 +80,7 @@ func parseInput(input string) (ans desert) {
 		generateNode(line)
 	}
 
-	desert.Network = network{
+	desert.Network = node_tree.Network{
 		Root: nodes["AAA"],
 	}
 
@@ -93,7 +94,7 @@ func generateNode(line string) {
 	right := m[3]
 
 	if _, ok := nodes[name]; !ok {
-		nodes[name] = &node{
+		nodes[name] = &node_tree.Node{
 			Self:  name,
 			Left:  nil,
 			Right: nil,
@@ -101,7 +102,7 @@ func generateNode(line string) {
 	}
 
 	if _, ok := nodes[left]; !ok {
-		nodes[left] = &node{
+		nodes[left] = &node_tree.Node{
 			Self:  left,
 			Left:  nil,
 			Right: nil,
@@ -110,7 +111,7 @@ func generateNode(line string) {
 	nodes[name].Left = nodes[left]
 
 	if _, ok := nodes[right]; !ok {
-		nodes[right] = &node{
+		nodes[right] = &node_tree.Node{
 			Self:  right,
 			Left:  nil,
 			Right: nil,
@@ -119,8 +120,8 @@ func generateNode(line string) {
 	nodes[name].Right = nodes[right]
 }
 
-func getStartingNodes(n map[string]*node) []*node {
-	ret := make([]*node, 0)
+func getStartingNodes(n map[string]*node_tree.Node) []*node_tree.Node {
+	ret := make([]*node_tree.Node, 0)
 	for k, v := range n {
 		if k[len(k)-1:] == "A" {
 			ret = append(ret, v)
@@ -132,7 +133,7 @@ func getStartingNodes(n map[string]*node) []*node {
 
 type desert struct {
 	Directions string
-	Network    network
+	Network    node_tree.Network
 }
 
 func (d desert) WalkToEnd(part2 bool) int {
@@ -164,7 +165,7 @@ func (d desert) WalkToEnd(part2 bool) int {
 	return steps
 }
 
-func (d desert) SimultWalkToEnd(startingNodes []*node) int {
+func (d desert) SimultWalkToEnd(startingNodes []*node_tree.Node) int {
 	steps := 0
 
 	ns := startingNodes
@@ -202,26 +203,4 @@ func (d desert) SimultWalkToEnd(startingNodes []*node) int {
 	}
 
 	return steps
-}
-
-type network struct {
-	Root *node
-}
-
-type node struct {
-	Self  string
-	Left  *node
-	Right *node
-}
-
-func (n *node) GoLeft() *node {
-	return n.Left
-}
-
-func (n *node) GoRight() *node {
-	return n.Right
-}
-
-func (n *node) IsEnd() bool {
-	return n.Self == "ZZZ"
 }
