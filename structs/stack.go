@@ -10,11 +10,11 @@ func (s *Stack[T]) IsEmpty() bool {
 	return s.Len() == 0
 }
 
-func (s *Stack[T]) Push(v T) *[]T {
+func (s *Stack[T]) Push(v T) {
 	n := make([]T, 0)
 	n = append(n, v)
-	n = append(n, *s...)
-	return &n
+	n = append(n, (*s)[:]...)
+	*s = n
 }
 
 func (s *Stack[T]) Pop() (t T, empty bool) {

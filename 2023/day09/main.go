@@ -4,10 +4,10 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"slices"
 	"strings"
 
 	"github.com/benjamw/aoc/algos"
+	"github.com/benjamw/aoc/structs"
 	"github.com/benjamw/aoc/util"
 )
 
@@ -45,8 +45,8 @@ func part1(input string, part2 bool) int {
 
 	for i, p := range parsed {
 		_ = i
-		stack := calcStack(p)
-		extra = append(extra, reverseCalcStack(stack, part2))
+		st := calcStack(p)
+		extra = append(extra, reverseCalcStack(st, part2))
 	}
 
 	return algos.Sum(extra)
@@ -74,11 +74,12 @@ func differences(l []int) []int {
 	return ret
 }
 
-func calcStack(p []int) [][]int {
-	s := [][]int{p}
+func calcStack(p []int) structs.Stack[[]int] {
+	s := structs.Stack[[]int]{}
+	s.Push(p)
 	for {
 		d := differences(p)
-		s = append(s, d)
+		s.Push(d)
 		if isZeros(d) {
 			return s
 		}
@@ -87,11 +88,12 @@ func calcStack(p []int) [][]int {
 	}
 }
 
-func reverseCalcStack(stack [][]int, front bool) int {
+func reverseCalcStack(st structs.Stack[[]int], front bool) int {
 	// start going back up the stack and add values
 	d := 0
-	slices.Reverse(stack)
-	for _, s := range stack {
+	for !st.IsEmpty() {
+		s, _ := st.Pop()
+
 		if front {
 			d = s[0] - d
 		} else {
