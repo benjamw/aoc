@@ -1,6 +1,7 @@
 package algos
 
 import (
+	"reflect"
 	"sort"
 	"strconv"
 
@@ -42,6 +43,35 @@ func RemoveIndex[T any](s []T, index int) []T {
 	ret := make([]T, 0)
 	ret = append(ret, s[:index]...)
 	return append(ret, s[index+1:]...)
+}
+
+func RemoveElem[T any](s []T, elem T) []T {
+	return RemoveIndex(s, Find(s, elem))
+}
+
+func Find[T any](s []T, v T) int {
+	for i, t := range s {
+		if reflect.DeepEqual(t, v) {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func Transpose[T any](s [][]T) [][]T {
+	xl := len(s[0])
+	yl := len(s)
+	ret := make([][]T, xl)
+	for i := range ret {
+		ret[i] = make([]T, yl)
+	}
+	for i := 0; i < xl; i++ {
+		for j := 0; j < yl; j++ {
+			ret[i][j] = s[j][i]
+		}
+	}
+	return ret
 }
 
 // SimpleGeneric will find the intersection between two slices using comparison

@@ -26,7 +26,10 @@ func Product[T ~uint | ~int |
 }
 
 // greatest common divisor (GCD) via Euclidean algorithm
-func GCD(a, b int, integers ...int) int {
+func GCD[T ~uint | ~int |
+	~int8 | ~int16 | ~int32 | ~int64 |
+	~uint8 | ~uint16 | ~uint32 | ~uint64,
+](a, b T, integers ...T) T {
 	for b != 0 {
 		t := b
 		b = a % b
@@ -42,7 +45,10 @@ func GCD(a, b int, integers ...int) int {
 }
 
 // find Least Common Multiple (LCM) via GCD
-func LCM(a, b int, integers ...int) int {
+func LCM[T ~uint | ~int |
+	~int8 | ~int16 | ~int32 | ~int64 |
+	~uint8 | ~uint16 | ~uint32 | ~uint64,
+](a, b T, integers ...T) T {
 	result := a * b / GCD(a, b)
 
 	for i := 0; i < len(integers); i++ {
@@ -52,7 +58,10 @@ func LCM(a, b int, integers ...int) int {
 	return result
 }
 
-func LCMs(s []int) int {
+func LCMs[T ~uint | ~int |
+	~int8 | ~int16 | ~int32 | ~int64 |
+	~uint8 | ~uint16 | ~uint32 | ~uint64,
+](s []T) T {
 	switch len(s) {
 	case 0:
 		return 0
@@ -65,7 +74,10 @@ func LCMs(s []int) int {
 	}
 }
 
-func GCDs(s []int) int {
+func GCDs[T ~uint | ~int |
+	~int8 | ~int16 | ~int32 | ~int64 |
+	~uint8 | ~uint16 | ~uint32 | ~uint64,
+](s []T) T {
 	switch len(s) {
 	case 0:
 		return 0
