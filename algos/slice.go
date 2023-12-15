@@ -132,3 +132,21 @@ func containsGeneric[T comparable](b []T, e T) bool {
 	}
 	return false
 }
+
+func SumFunc[S ~[]T, T any](s S, callable func(t T) int) int {
+	sum := 0
+	for _, t := range s {
+		sum += callable(t)
+	}
+
+	return sum
+}
+
+func ProdFunc[S ~[]T, T any](s S, callable func(t T) int) int {
+	sum := 1
+	for _, t := range s {
+		sum *= callable(t)
+	}
+
+	return sum
+}
