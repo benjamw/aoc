@@ -25,31 +25,31 @@ var (
 	}
 )
 
-type Grid[T any] struct {
-	Nodes  [][]Node[T]
+type PipeGrid[T any] struct {
+	Nodes  [][]PipeNode[T]
 	StartX int
 	StartY int
 }
 
-func (g *Grid[T]) Get(x, y int) *Node[T] {
+func (g *PipeGrid[T]) Get(x, y int) *PipeNode[T] {
 	return &g.Nodes[y][x]
 }
 
-func (g *Grid[T]) GetStartNode() *Node[T] {
+func (g *PipeGrid[T]) GetStartNode() *PipeNode[T] {
 	return g.Get(g.StartX, g.StartY)
 }
 
-type Node[T any] struct {
+type PipeNode[T any] struct {
 	X       int
 	Y       int
 	Value   T
 	InPipe  bool
-	Grid    *Grid[T]
+	Grid    *PipeGrid[T]
 	InLoop  bool
 	IsStart bool
 }
 
-func (n *Node[T]) Up() (nn *Node[T], err error) {
+func (n *PipeNode[T]) Up() (nn *PipeNode[T], err error) {
 	if n.Y == 0 {
 		err = errors.New("y out of bounds low")
 		return
@@ -59,7 +59,7 @@ func (n *Node[T]) Up() (nn *Node[T], err error) {
 	return
 }
 
-func (n *Node[T]) Right() (nn *Node[T], err error) {
+func (n *PipeNode[T]) Right() (nn *PipeNode[T], err error) {
 	if n.X+1 >= len(n.Grid.Nodes[0]) {
 		err = errors.New("x out of bounds high")
 		return
@@ -69,7 +69,7 @@ func (n *Node[T]) Right() (nn *Node[T], err error) {
 	return
 }
 
-func (n *Node[T]) Down() (nn *Node[T], err error) {
+func (n *PipeNode[T]) Down() (nn *PipeNode[T], err error) {
 	if n.Y+1 >= len(n.Grid.Nodes) {
 		err = errors.New("y out of bounds high")
 		return
@@ -79,7 +79,7 @@ func (n *Node[T]) Down() (nn *Node[T], err error) {
 	return
 }
 
-func (n *Node[T]) Left() (nn *Node[T], err error) {
+func (n *PipeNode[T]) Left() (nn *PipeNode[T], err error) {
 	if n.X-1 < 0 {
 		err = errors.New("x out of bounds low")
 		return
@@ -89,10 +89,10 @@ func (n *Node[T]) Left() (nn *Node[T], err error) {
 	return
 }
 
-func (n *Node[T]) Move(dir string) *Node[T] {
+func (n *PipeNode[T]) Move(dir string) *PipeNode[T] {
 	var nx, ny int
 	var err error
-	var nn *Node[T]
+	var nn *PipeNode[T]
 
 	switch dir {
 	case U:

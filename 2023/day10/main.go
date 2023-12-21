@@ -67,7 +67,7 @@ func part2(input string) int {
 
 	c := countInLoop(&g)
 
-	// util.PrintGridFunc(g.Nodes, func(n grid.Node[byte]) string {
+	// util.PrintGridFunc(g.Nodes, func(n grid.PipeNode[byte]) string {
 	// 	if n.InPipe {
 	// 		return transVal(n.Value)
 	// 	} else {
@@ -82,8 +82,8 @@ func part2(input string) int {
 	return c
 }
 
-func parseInput(input string) (g grid.Grid[byte]) {
-	g.Nodes = make([][]grid.Node[byte], 0)
+func parseInput(input string) (g grid.PipeGrid[byte]) {
+	g.Nodes = make([][]grid.PipeNode[byte], 0)
 	for y, line := range strings.Split(input, "\n") {
 		l := []byte(strings.TrimSpace(line))
 		if x := algos.Find(l, byte('S')); -1 != x {
@@ -91,9 +91,9 @@ func parseInput(input string) (g grid.Grid[byte]) {
 			g.StartY = y
 		}
 
-		nl := make([]grid.Node[byte], 0)
+		nl := make([]grid.PipeNode[byte], 0)
 		for x, b := range l {
-			nl = append(nl, grid.Node[byte]{X: x, Y: y, Value: b, Grid: &g})
+			nl = append(nl, grid.PipeNode[byte]{X: x, Y: y, Value: b, Grid: &g})
 		}
 		g.Nodes = append(g.Nodes, nl)
 	}
@@ -103,7 +103,7 @@ func parseInput(input string) (g grid.Grid[byte]) {
 	return g
 }
 
-func followPath(g grid.Grid[byte]) int {
+func followPath(g grid.PipeGrid[byte]) int {
 	c := 0
 
 	r := g.GetStartNode()
@@ -128,7 +128,7 @@ func followPath(g grid.Grid[byte]) int {
 	return c
 }
 
-func fillLoop(g *grid.Grid[byte]) {
+func fillLoop(g *grid.PipeGrid[byte]) {
 	r := g.GetStartNode()
 	d, _ := getStartingDirs(*g)
 
@@ -156,7 +156,7 @@ func getDir(elem byte, dir string) string {
 	return algos.RemoveElem(dirs, od)[0]
 }
 
-func getStartingDirs(g grid.Grid[byte]) (s1, s2 string) {
+func getStartingDirs(g grid.PipeGrid[byte]) (s1, s2 string) {
 	// look at the S position and determine which way each r is going
 	// below S:
 	if g.StartY < len(g.Nodes) && slices.Contains(DirMap[g.Get(g.StartX, g.StartY+1).Value], grid.U) {
@@ -193,7 +193,7 @@ func getStartingDirs(g grid.Grid[byte]) (s1, s2 string) {
 	return
 }
 
-func countInLoop(g *grid.Grid[byte]) int {
+func countInLoop(g *grid.PipeGrid[byte]) int {
 	c := 0
 	var pv byte
 	var opp bool

@@ -4,7 +4,7 @@ Thanks Alex :)
 
 ## Running Locally
 ### Requirements
-Go 1.16+ is required because [embed][embed] is used for input files.
+Go 1.18+ is required because [generics][generics] are used in some algorithms.
 
 Use `go run main.go -part <1 or 2>` will be usable to run the actual inputs for that day.
 
@@ -34,4 +34,5 @@ Requires passing your cookie from AOC from either `-cookie` flag, or `AOC_SESSIO
 make input DAY=1 YEAR=2020
 ```
 
-[embed]: https://golang.org/pkg/embed/
+[embed]: https://pkg.go.dev/embed
+[generics]: https://go.dev/blog/intro-generics
