@@ -49,6 +49,11 @@ func RemoveElem[T any](s []T, elem T) []T {
 	return RemoveIndex(s, Find(s, elem))
 }
 
+// Find an element in a slice
+// Usage:
+//
+//	s := []int{1, 2, 3, 4, 5}
+//	idx := algos.Find(s, 3)
 func Find[T any](s []T, v T) int {
 	for i, t := range s {
 		if reflect.DeepEqual(t, v) {
@@ -65,14 +70,14 @@ func Find[T any](s []T, v T) int {
 // Usage:
 //
 //	s := []string{"ab", "ac", "de", "at", "gfb", "fr"}
-//	Count(s, func (x string) bool {
+//	c := algos.Count(s, func (x string) bool {
 //		return strings.Contains(x, "a")
 //	})
 //
 // To search for a single value:
 //
 //	s := []int{1, 2, 3, 4, 5, 6}
-//	Count(s, func (x int) bool { return x == 3 })
+//	c := algos.Count(s, func (x int) bool { return x == 3 })
 func Count[T any](slice []T, f func(T) bool) int {
 	count := 0
 	for _, s := range slice {
