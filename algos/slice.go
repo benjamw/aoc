@@ -59,6 +59,32 @@ func Find[T any](s []T, v T) int {
 	return -1
 }
 
+// Count the number of elements in the slice that cause the
+// function to return true.
+//
+// Usage:
+//
+//	s := []string{"ab", "ac", "de", "at", "gfb", "fr"}
+//	Count(s, func (x string) bool {
+//		return strings.Contains(x, "a")
+//	})
+//
+// To search for a single value:
+//
+//	s := []int{1, 2, 3, 4, 5, 6}
+//	Count(s, func (x int) bool { return x == 3 })
+func Count[T any](slice []T, f func(T) bool) int {
+	count := 0
+	for _, s := range slice {
+		if f(s) {
+			count++
+		}
+	}
+	return count
+}
+
+// Transpose a slice from s[y][x] to s[x][y]
+// So tall skinny slices become short long slices and vice versa.
 func Transpose[T any](s [][]T) [][]T {
 	xl := len(s[0])
 	yl := len(s)

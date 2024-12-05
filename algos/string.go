@@ -4,11 +4,11 @@ import (
 	"strings"
 )
 
-func Reverse(input string) string {
+func Reverse(s string) string {
 	// Get Unicode code points.
 	n := 0
-	rune := make([]rune, len(input))
-	for _, r := range input {
+	rune := make([]rune, len(s))
+	for _, r := range s {
 		rune[n] = r
 		n++
 	}
@@ -27,4 +27,25 @@ func TrimAll(slc []string) []string {
 	}
 
 	return slc
+}
+
+func ToSlice(s string) []string {
+	return strings.Split(s, "\n")
+}
+
+func ToMultiSlice(s string) [][]string {
+	slc := ToSlice(s)
+
+	out := make([][]string, len(slc))
+	for i, v := range slc {
+		out[i] = strings.Fields(v)
+	}
+
+	return out
+}
+
+func ToColumnSlice(s string) [][]string {
+	slc := ToMultiSlice(s)
+
+	return Transpose(slc)
 }
